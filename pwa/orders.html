@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="theme-color" content="#be185d">
+  <title>ऑर्डर — Payal Design Studio</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="orders">
+
+  <div class="screen">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goBack()">←</button>
+      <div class="topbar-title">
+        <h1>सर्व ऑर्डर</h1>
+        <p>Manage your orders</p>
+      </div>
+      <a href="new-order.html" class="topbar-action">+ नवीन</a>
+    </div>
+
+    <div class="page-content">
+      <!-- Search -->
+      <div style="padding:12px 16px">
+        <input
+          type="search"
+          class="form-input"
+          placeholder="🔍 नाव किंवा ऑर्डर नं शोधा..."
+          id="search-input"
+        >
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">
+          📋 सर्व
+        </button>
+        <button class="filter-tab" data-filter="received">
+          🔵 मिळाली
+        </button>
+        <button class="filter-tab" data-filter="progress">
+          🟡 शिवत आहोत
+        </button>
+        <button class="filter-tab" data-filter="ready">
+          🟢 तयार
+        </button>
+        <button class="filter-tab" data-filter="done">
+          ✅ दिले
+        </button>
+      </div>
+
+      <!-- Orders List -->
+      <div class="section">
+        <div id="orders-list">
+          <div class="card">
+            <div style="text-align:center;padding:20px;color:var(--gray-400)">
+              लोड होत आहे...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="goTo('dashboard.html')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-item active" onclick="goTo('orders.html')">
+        <span class="nav-icon">📋</span>
+        <span>ऑर्डर</span>
+      </button>
+      <button class="nav-item" onclick="goTo('new-order.html')"
+              style="color:var(--pink)">
+        <span class="nav-icon"
+              style="background:var(--pink);color:white;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;margin-top:-12px;box-shadow:0 4px 12px rgba(190,24,93,0.4)">
+          ✂️
+        </span>
+        <span>नवीन</span>
+      </button>
+      <button class="nav-item" onclick="goTo('bill.html')">
+        <span class="nav-icon">🧾</span>
+        <span>बिल</span>
+      </button>
+      <button class="nav-item" onclick="goTo('broadcast.html')">
+        <span class="nav-icon">📢</span>
+        <span>Offers</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="assets/db.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    // Search functionality
+    document.getElementById('search-input')?.addEventListener('input', async (e) => {
+      const q      = e.target.value.toLowerCase();
+      const orders = await dbGetAll('orders');
+      const result = orders.filter(o =>
+        o.customerName?.toLowerCase().includes(q) ||
+        o.id?.toLowerCase().includes(q) ||
+        o.phone?.includes(q)
+      );
+      APP.orders = result;
+      renderOrders('all');
+    });
+  </script>
+</body>
+</html>

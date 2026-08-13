@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="theme-color" content="#be185d">
+  <title>नवीन ऑर्डर — Payal Design Studio</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .preset-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .preset-item {
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 2px solid var(--pink-light);
+      background: white;
+      color: var(--pink);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-item:active {
+      background: var(--pink);
+      color: white;
+    }
+
+    .total-bar {
+      background: linear-gradient(135deg, #be185d, #9d174d);
+      color: white;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .offline-badge {
+      background: var(--gold);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body data-page="new-order">
+
+  <div class="screen">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goBack()">←</button>
+      <div class="topbar-title">
+        <h1>नवीन ऑर्डर</h1>
+        <p>Customer ची order add करा</p>
+      </div>
+      <span class="offline-badge" id="offline-indicator"
+            style="display:none">
+        💾 Offline
+      </span>
+    </div>
+
+    <div class="page-content">
+      <form id="order-form">
+
+        <!-- Customer Details -->
+        <div class="section">
+          <p class="section-title">👤 Customer Details</p>
+          <div class="card">
+            <div class="form-group">
+              <label class="form-label">📞 Phone Number *</label>
+              <input
+                type="tel"
+                id="phone"
+                class="form-input"
+                placeholder="98XXXXXXXX"
+                maxlength="10"
+                required
+              >
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">👤 Customer Name *</label>
+              <input
+                type="text"
+                id="cname"
+                class="form-input"
+                placeholder="उदा. सुनीता पाटील"
+                required
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Add Items -->
+        <div class="section">
+          <p class="section-title">⚡ Quick Add</p>
+          <div class="preset-items">
+            <button type="button" class="preset-item"
+                    data-name="ब्लाउज" data-price="400">
+              👗 ब्लाउज
+            </button>
+            <button type="button" class="preset-item"
+                    data-name="लेडीज पँट" data-price="400">
+              👖 पँट
+            </button>
+            <button type="button" class="preset-item"
+                    data-name="साडी पिको" data-price="80">
+              🪡 पिको
+            </button>
+            <button type="button" class="preset-item"
+                    data-name="साडी फॉल" data-price="100">
+              🧵 फॉल
+            </button>
+            <button type="button" class="preset-item"
+                    data-name="टू-पीस ड्रेस" data-price="600">
+              💃 ड्रेस
+            </button>
+            <button type="button" class="preset-item"
+                    data-name="साडीपासून ड्रेस" data-price="700">
+              🌸 साडी ड्रेस
+            </button>
+          </div>
+        </div>
+
+        <!-- Items List -->
+        <div class="section">
+          <div class="flex-between mb-8">
+            <p class="section-title" style="margin-bottom:0">
+              📦 Items
+            </p>
+            <button type="button" id="add-item-btn"
+                    class="btn btn-secondary btn-sm">
+              + Add Item
+            </button>
+          </div>
+
+          <div class="card">
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <p class="text-xs text-gray text-bold"
+                 style="flex:2">काय शिवायचे</p>
+              <p class="text-xs text-gray text-bold"
+                 style="flex:1">किंमत (₹)</p>
+              <div style="width:38px"></div>
+            </div>
+            <div id="items-container"></div>
+          </div>
+        </div>
+
+        <!-- Total -->
+        <div class="section">
+          <div class="total-bar">
+            <div>
+              <p style="font-size:0.75rem;opacity:0.8">एकूण किंमत</p>
+              <p style="font-size:1.5rem;font-weight:800"
+                 id="total-display">₹0</p>
+            </div>
+            <div style="text-align:right">
+              <p style="font-size:0.75rem;opacity:0.8">बाकी रक्कम</p>
+              <p style="font-size:1.5rem;font-weight:800"
+                 id="balance-display">₹0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment & Notes -->
+        <div class="section">
+          <p class="section-title">💰 Payment & Notes</p>
+          <div class="card">
+            <div class="form-group">
+              <label class="form-label">
+                💵 Advance मिळाले (₹)
+              </label>
+              <input
+                type="number"
+                id="advance"
+                class="form-input"
+                placeholder="0"
+                min="0"
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                📅 Delivery Date (अंदाजे)
+              </label>
+              <input
+                type="date"
+                id="delivery-date"
+                class="form-input"
+              >
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">📝 Notes</label>
+              <textarea
+                id="notes"
+                class="form-input"
+                rows="3"
+                placeholder="उदा. पॅडिंग हवी, बॅक डिझाइन, कापड customer चा..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="section">
+          <button type="submit" class="btn btn-primary">
+            ✅ ऑर्डर Save करा + WhatsApp Confirm
+          </button>
+          <p class="text-xs text-gray text-center"
+             style="margin-top:10px">
+            📱 Customer ला automatic WhatsApp message जाईल
+          </p>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="assets/db.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    // Set min date to today for delivery
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('delivery-date').min = today;
+
+    // Show offline indicator
+    if (!navigator.onLine) {
+      document.getElementById('offline-indicator').style.display = 'block';
+    }
+
+    window.addEventListener('offline', () => {
+      document.getElementById('offline-indicator').style.display = 'block';
+    });
+
+    window.addEventListener('online', () => {
+      document.getElementById('offline-indicator').style.display = 'none';
+    });
+  </script>
+</body>
+</html>

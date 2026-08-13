@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="theme-color" content="#be185d">
+  <title>Catalog — Payal Design Studio</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    #catalog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .template-card.selected {
+      border: 2px solid var(--pink);
+      background: var(--pink-light);
+    }
+  </style>
+</head>
+<body data-page="catalog">
+
+  <div class="screen">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goBack()">←</button>
+      <div class="topbar-title">
+        <h1>📸 Catalog</h1>
+        <p>Designs manage करा</p>
+      </div>
+      <button class="topbar-action"
+              onclick="showToast('Photo upload येईल! Demo मध्ये नाही','')">
+        + Add
+      </button>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Category Filter -->
+      <div class="filter-tabs" style="margin-top:12px">
+        <button class="filter-tab cat-filter active" data-cat="all">
+          सर्व
+        </button>
+        <button class="filter-tab cat-filter" data-cat="ब्लाउज">
+          👗 ब्लाउज
+        </button>
+        <button class="filter-tab cat-filter" data-cat="पँट">
+          👖 पँट
+        </button>
+        <button class="filter-tab cat-filter" data-cat="ड्रेस">
+          💃 ड्रेस
+        </button>
+        <button class="filter-tab cat-filter" data-cat="इतर">
+          🪡 इतर
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="section">
+        <div class="grid-2">
+          <div class="stat-card">
+            <div class="stat-number" id="total-designs">-</div>
+            <div class="stat-label">Total Designs</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="trending-count">-</div>
+            <div class="stat-label">🔥 Trending</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Catalog Grid -->
+      <div class="section">
+        <div id="catalog-grid">
+          <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray-400)">
+            लोड होत आहे...
+          </div>
+        </div>
+      </div>
+
+      <!-- Add New (Demo) -->
+      <div class="section">
+        <div class="card"
+             style="border:2px dashed var(--gray-200);text-align:center;padding:30px">
+          <p style="font-size:2rem;margin-bottom:8px">📸</p>
+          <h3 style="margin-bottom:4px">नवीन Design Add करा</h3>
+          <p class="text-sm text-gray" style="margin-bottom:16px">
+            Customer ने पाठवलेला photo किंवा तुमचे काम
+          </p>
+          <button class="btn btn-secondary"
+                  onclick="showToast('Photo upload: Live version मध्ये येईल!','')">
+            📷 Photo Upload करा
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="goTo('dashboard.html')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" onclick="goTo('orders.html')">
+        <span class="nav-icon">📋</span>
+        <span>ऑर्डर</span>
+      </button>
+      <button class="nav-item" onclick="goTo('new-order.html')"
+              style="color:var(--pink)">
+        <span class="nav-icon"
+              style="background:var(--pink);color:white;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;margin-top:-12px;box-shadow:0 4px 12px rgba(190,24,93,0.4)">
+          ✂️
+        </span>
+        <span>नवीन</span>
+      </button>
+      <button class="nav-item" onclick="goTo('bill.html')">
+        <span class="nav-icon">🧾</span>
+        <span>बिल</span>
+      </button>
+      <button class="nav-item active" onclick="goTo('broadcast.html')">
+        <span class="nav-icon">📢</span>
+        <span>Offers</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="assets/db.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    async function loadStats() {
+      const catalog  = await dbGetAll('catalog');
+      const trending = catalog.filter(c => c.trending);
+      setEl('total-designs', catalog.length);
+      setEl('trending-count', trending.length);
+    }
+
+    window.addEventListener('DOMContentLoaded', loadStats);
+  </script>
+</body>
+</html>

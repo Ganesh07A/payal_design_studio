@@ -1,0 +1,22 @@
+{
+  "name": "Payal Design Studio",
+  "short_name": "Payal Studio",
+  "description": "Payal Design Studio - Order Management",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#fdf2f8",
+  "theme_color": "#be185d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=PD&backgroundColor=be185d&textColor=ffffff",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=PD&backgroundColor=be185d&textColor=ffffff",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

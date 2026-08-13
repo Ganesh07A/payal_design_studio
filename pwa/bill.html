@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="theme-color" content="#be185d">
+  <title>बिल — Payal Design Studio</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .bill-header {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #be185d, #9d174d);
+      color: white;
+    }
+
+    .hidden { display: none !important; }
+
+    .upi-section {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body data-page="bill">
+
+  <div class="screen">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goBack()">←</button>
+      <div class="topbar-title">
+        <h1>🧾 बिल बनवा</h1>
+        <p>Generate & Send Bill</p>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Select Order -->
+      <div class="section">
+        <p class="section-title">📋 ऑर्डर निवडा</p>
+        <div class="card">
+          <select id="bill-order-select" class="form-input">
+            <option value="">-- ऑर्डर निवडा --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Bill Preview -->
+      <div class="section">
+        <p class="section-title">👁️ Bill Preview</p>
+        <div class="bill-preview" id="bill-preview">
+ऑर्डर निवडा आणि bill preview
+येथे दिसेल...
+
+━━━━━━━━━━━━━━━━━━━━━
+  ✨ PAYAL DESIGN STUDIO ✨
+  Ladies Tailoring
+━━━━━━━━━━━━━━━━━━━━━
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="section hidden" id="bill-actions">
+
+        <!-- UPI QR -->
+        <div class="upi-section" style="margin-bottom:16px">
+          <p style="font-size:0.8rem;opacity:0.9">UPI Payment</p>
+          <div class="qr-placeholder">
+            📱
+          </div>
+          <p id="qr-label" style="font-weight:700;font-size:1.1rem">
+            QR Code
+          </p>
+          <p style="font-size:0.75rem;opacity:0.85;margin-top:4px">
+            payal@upi
+          </p>
+          <p style="font-size:0.72rem;opacity:0.7;margin-top:4px">
+            (Demo: Real QR येईल live version मध्ये)
+          </p>
+        </div>
+
+        <button class="btn btn-primary" style="margin-bottom:10px"
+                onclick="sendBillWhatsApp()">
+          📱 WhatsApp वर Bill पाठवा
+        </button>
+
+        <button class="btn btn-secondary" style="margin-bottom:10px"
+                onclick="copyBill()">
+          📋 Bill Copy करा
+        </button>
+
+        <button class="btn btn-outline" onclick="markPaid()">
+          ✅ Payment मिळाली (Mark Paid)
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="goTo('dashboard.html')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" onclick="goTo('orders.html')">
+        <span class="nav-icon">📋</span>
+        <span>ऑर्डर</span>
+      </button>
+      <button class="nav-item" onclick="goTo('new-order.html')"
+              style="color:var(--pink)">
+        <span class="nav-icon"
+              style="background:var(--pink);color:white;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;margin-top:-12px;box-shadow:0 4px 12px rgba(190,24,93,0.4)">
+          ✂️
+        </span>
+        <span>नवीन</span>
+      </button>
+      <button class="nav-item active" onclick="goTo('bill.html')">
+        <span class="nav-icon">🧾</span>
+        <span>बिल</span>
+      </button>
+      <button class="nav-item" onclick="goTo('broadcast.html')">
+        <span class="nav-icon">📢</span>
+        <span>Offers</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="assets/db.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    async function markPaid() {
+      const orderId = document.getElementById('bill-order-select')?.value;
+      if (!orderId) return;
+
+      const order = await dbGet('orders', orderId);
+      if (!order) return;
+
+      order.balance  = 0;
+      order.advance  = order.total;
+      order.synced   = false;
+      await dbAdd('orders', order);
+
+      showToast('✅ Payment marked! ₹' + order.total + ' मिळाले!', 'success');
+      setTimeout(() => {
+        showToast('📱 Customer ला payment confirmation पाठवला!', 'success');
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

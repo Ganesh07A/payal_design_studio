@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="theme-color" content="#be185d">
+  <title>Offers — Payal Design Studio</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .template-card {
+      background: white;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 10px;
+    }
+
+    .template-card.selected {
+      border-color: var(--pink);
+      background: var(--pink-light);
+    }
+
+    .template-card:active { transform: scale(0.98); }
+
+    .template-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .audience-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .audience-option.selected {
+      border-color: var(--pink);
+      background: var(--pink-light);
+    }
+
+    .audience-option input { display: none; }
+  </style>
+</head>
+<body data-page="broadcast">
+
+  <div class="screen">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goBack()">←</button>
+      <div class="topbar-title">
+        <h1>📢 Offers & Broadcasts</h1>
+        <p>Customers ला message पाठवा</p>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Stats -->
+      <div class="section">
+        <div class="card"
+             style="background:linear-gradient(135deg,#be185d,#9d174d);color:white;text-align:center">
+          <p style="font-size:0.8rem;opacity:0.85">
+            Total Customers
+          </p>
+          <p style="font-size:2.5rem;font-weight:800;line-height:1.2"
+             id="customer-count">-</p>
+          <p style="font-size:0.75rem;opacity:0.75">
+            सर्वांना message पाठवता येईल
+          </p>
+        </div>
+      </div>
+
+      <!-- Audience -->
+      <div class="section">
+        <p class="section-title">👥 कोणाला पाठवायचे?</p>
+
+        <label class="audience-option selected" id="aud-all-label">
+          <input type="radio" name="audience"
+                 value="all" checked>
+          <div>
+            <p class="text-bold">सर्व Customers</p>
+            <p class="text-xs text-gray">
+              सर्वांना message जाईल
+            </p>
+          </div>
+          <span style="margin-left:auto;font-size:1.2rem">👥</span>
+        </label>
+
+        <label class="audience-option" id="aud-recent-label">
+          <input type="radio" name="audience" value="recent">
+          <div>
+            <p class="text-bold">Recent Customers</p>
+            <p class="text-xs text-gray">
+              गेल्या 3 महिन्यातील
+            </p>
+          </div>
+          <span style="margin-left:auto;font-size:1.2rem">🕐</span>
+        </label>
+
+        <label class="audience-option" id="aud-pending-label">
+          <input type="radio" name="audience" value="pending">
+          <div>
+            <p class="text-bold">Pending Payment</p>
+            <p class="text-xs text-gray">
+              बाकी रक्कम असलेले
+            </p>
+          </div>
+          <span style="margin-left:auto;font-size:1.2rem">💳</span>
+        </label>
+      </div>
+
+      <!-- Templates -->
+      <div class="section">
+        <p class="section-title">📝 Message Template</p>
+
+        <div class="template-card" data-template="navratri">
+          <div class="template-title">
+            <span style="font-size:1.3rem">🎉</span>
+            <h3>नवरात्री Special</h3>
+          </div>
+          <p class="text-xs text-gray">
+            Festival offer + नवीन designs
+          </p>
+        </div>
+
+        <div class="template-card" data-template="diwali">
+          <div class="template-title">
+            <span style="font-size:1.3rem">🪔</span>
+            <h3>दिवाळी Offer</h3>
+          </div>
+          <p class="text-xs text-gray">
+            दिवाळी discount + wishes
+          </p>
+        </div>
+
+        <div class="template-card" data-template="new_designs">
+          <div class="template-title">
+            <span style="font-size:1.3rem">✨</span>
+            <h3>नवीन Designs आले!</h3>
+          </div>
+          <p class="text-xs text-gray">
+            New collection announcement
+          </p>
+        </div>
+
+        <div class="template-card" data-template="reminder">
+          <div class="template-title">
+            <span style="font-size:1.3rem">🌸</span>
+            <h3>Customer Reminder</h3>
+          </div>
+          <p class="text-xs text-gray">
+            खूप दिवसात भेट नाही reminder
+          </p>
+        </div>
+
+        <!-- Custom Message -->
+        <div class="card" style="margin-top:12px">
+          <p class="form-label">✏️ Custom Message लिहा</p>
+          <textarea
+            id="custom-msg"
+            class="form-input"
+            rows="4"
+            placeholder="तुमचा स्वतःचा message लिहा..."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Message Preview -->
+      <div class="section" id="preview-section" style="display:none">
+        <p class="section-title">👁️ Preview</p>
+        <div class="bill-preview" id="msg-preview"
+             style="font-family:inherit;font-size:0.85rem;line-height:1.6">
+          Template निवडा...
+        </div>
+      </div>
+
+      <!-- Send Button -->
+      <div class="section">
+        <button class="btn btn-primary" id="send-broadcast">
+          📤 Broadcast पाठवा
+        </button>
+        <p class="text-xs text-gray text-center mt-8">
+          ⚠️ WhatsApp approved templates वापरून पाठवले जाईल
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="goTo('dashboard.html')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" onclick="goTo('orders.html')">
+        <span class="nav-icon">📋</span>
+        <span>ऑर्डर</span>
+      </button>
+      <button class="nav-item" onclick="goTo('new-order.html')"
+              style="color:var(--pink)">
+        <span class="nav-icon"
+              style="background:var(--pink);color:white;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;margin-top:-12px;box-shadow:0 4px 12px rgba(190,24,93,0.4)">
+          ✂️
+        </span>
+        <span>नवीन</span>
+      </button>
+      <button class="nav-item" onclick="goTo('bill.html')">
+        <span class="nav-icon">🧾</span>
+        <span>बिल</span>
+      </button>
+      <button class="nav-item active" onclick="goTo('broadcast.html')">
+        <span class="nav-icon">📢</span>
+        <span>Offers</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="assets/db.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    // Audience selection UI
+    document.querySelectorAll('.audience-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.audience-option')
+                .forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+      });
+    });
+
+    // Show preview when template selected
+    document.querySelectorAll('.template-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.getElementById('preview-section').style.display = 'block';
+      });
+    });
+
+    document.getElementById('custom-msg')?.addEventListener('input', () => {
+      document.getElementById('preview-section').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

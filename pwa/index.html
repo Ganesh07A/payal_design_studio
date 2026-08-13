@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="theme-color" content="#be185d">
+  <title>Payal Design Studio</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #be185d 0%, #9d174d 50%, #7c3aed 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .splash-card {
+      background: white;
+      border-radius: 28px;
+      padding: 40px 28px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .shop-icon {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #be185d, #9d174d);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 20px rgba(190,24,93,0.3);
+    }
+
+    .shop-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gray-800);
+      margin-bottom: 4px;
+    }
+
+    .shop-tagline {
+      color: var(--gray-400);
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+
+    .pin-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .pin-dots {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2.5px solid var(--gray-200);
+      transition: all 0.2s;
+    }
+
+    .pin-dot.filled {
+      background: var(--pink);
+      border-color: var(--pink);
+      transform: scale(1.1);
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .key {
+      height: 60px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: var(--gray-50);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .key:active {
+      background: var(--pink-light);
+      color: var(--pink);
+      transform: scale(0.95);
+    }
+
+    .key.del {
+      font-size: 1rem;
+      color: var(--gray-400);
+    }
+
+    .key.zero {
+      grid-column: 2;
+    }
+
+    .demo-note {
+      font-size: 0.72rem;
+      color: var(--gray-400);
+      margin-top: 8px;
+    }
+
+    .features {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .feature-tag {
+      background: var(--pink-light);
+      color: var(--pink);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-card">
+    <div class="shop-icon">✂️</div>
+
+    <h1 class="shop-name">Payal Design Studio</h1>
+    <p class="shop-tagline">Ladies Tailoring • पुणे</p>
+
+    <div class="features">
+      <span class="feature-tag">👗 ब्लाउज</span>
+      <span class="feature-tag">👖 पँट</span>
+      <span class="feature-tag">🪡 पिको-फॉल</span>
+      <span class="feature-tag">🌸 ड्रेस</span>
+    </div>
+
+    <p class="pin-label">🔐 PIN टाका (Admin)</p>
+
+    <div class="pin-dots">
+      <div class="pin-dot" id="dot-0"></div>
+      <div class="pin-dot" id="dot-1"></div>
+      <div class="pin-dot" id="dot-2"></div>
+      <div class="pin-dot" id="dot-3"></div>
+    </div>
+
+    <div class="keypad">
+      <button class="key" onclick="addPin('1')">1</button>
+      <button class="key" onclick="addPin('2')">2</button>
+      <button class="key" onclick="addPin('3')">3</button>
+      <button class="key" onclick="addPin('4')">4</button>
+      <button class="key" onclick="addPin('5')">5</button>
+      <button class="key" onclick="addPin('6')">6</button>
+      <button class="key" onclick="addPin('7')">7</button>
+      <button class="key" onclick="addPin('8')">8</button>
+      <button class="key" onclick="addPin('9')">9</button>
+      <button class="key zero" onclick="addPin('0')">0</button>
+      <button class="key del" onclick="delPin()">⌫</button>
+    </div>
+
+    <p class="demo-note">🎯 Demo PIN: 1234</p>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    let pin = '';
+    const CORRECT_PIN = '1234';
+
+    function addPin(digit) {
+      if (pin.length >= 4) return;
+      pin += digit;
+      updateDots();
+      if (pin.length === 4) checkPin();
+    }
+
+    function delPin() {
+      pin = pin.slice(0, -1);
+      updateDots();
+    }
+
+    function updateDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        if (dot) dot.classList.toggle('filled', i < pin.length);
+      }
+    }
+
+    function checkPin() {
+      if (pin === CORRECT_PIN) {
+        showToast('✅ Welcome Payal ताई! 🙏', 'success');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+      } else {
+        showToast('❌ चुकीचा PIN!', 'error');
+        pin = '';
+        setTimeout(updateDots, 300);
+      }
+    }
+
+    function showToast(msg, type) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  </script>
+</body>
+</html>

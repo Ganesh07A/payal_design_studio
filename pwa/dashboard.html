@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="theme-color" content="#be185d">
+  <title>Dashboard — Payal Design Studio</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .header-banner {
+      background: linear-gradient(135deg, #be185d, #9d174d);
+      color: white;
+      padding: 20px 20px 32px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .greeting-text h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .greeting-text p {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .shop-avatar {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 16px;
+      margin-top: -20px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card-dash {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 16px 16px;
+    }
+
+    .action-btn {
+      background: white;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .action-btn:active {
+      transform: scale(0.97);
+      box-shadow: var(--shadow-md);
+    }
+
+    .action-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .action-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      text-align: center;
+    }
+
+    .online-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .online-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body data-page="dashboard">
+
+  <div class="screen">
+    <!-- Header Banner -->
+    <div class="header-banner">
+      <div class="header-top">
+        <div class="greeting-text">
+          <h2>नमस्कार, पायल ताई! 🙏</h2>
+          <p id="today-date">आज: लोड होत आहे...</p>
+          <div class="online-status" style="margin-top:6px">
+            <div class="online-dot" id="status-dot"></div>
+            <span id="online-status-text">Online</span>
+          </div>
+        </div>
+        <div class="shop-avatar">✂️</div>
+      </div>
+
+      <!-- Banner Stats -->
+      <div style="display:flex;gap:20px">
+        <div>
+          <p style="font-size:1.6rem;font-weight:800;line-height:1"
+             id="stat-active">-</p>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.8)">
+            Active ऑर्डर
+          </p>
+        </div>
+        <div>
+          <p style="font-size:1.6rem;font-weight:800;line-height:1"
+             id="stat-ready">-</p>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.8)">
+            Pickup Ready
+          </p>
+        </div>
+        <div>
+          <p style="font-size:1.6rem;font-weight:800;line-height:1"
+             id="stat-revenue">-</p>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.8)">
+            आजचे advance
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card-dash">
+          <div class="stat-icon" style="background:#fce7f3">👥</div>
+          <div>
+            <p class="text-bold text-pink" style="font-size:1.3rem"
+               id="stat-customers">-</p>
+            <p class="text-xs text-gray">Customers</p>
+          </div>
+        </div>
+        <div class="stat-card-dash">
+          <div class="stat-icon" style="background:#d1fae5">✅</div>
+          <div>
+            <p class="text-bold text-green" style="font-size:1.3rem"
+               id="stat-delivered">-</p>
+            <p class="text-xs text-gray">Delivered</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="section">
+        <p class="section-title">Quick Actions</p>
+      </div>
+
+      <div class="quick-actions">
+        <a href="new-order.html" class="action-btn">
+          <div class="action-icon" style="background:#fce7f3">
+            ➕
+          </div>
+          <span class="action-label">नवीन ऑर्डर</span>
+        </a>
+
+        <a href="orders.html" class="action-btn">
+          <div class="action-icon" style="background:#fef3c7">
+            📋
+          </div>
+          <span class="action-label">सर्व ऑर्डर</span>
+        </a>
+
+        <a href="bill.html" class="action-btn">
+          <div class="action-icon" style="background:#d1fae5">
+            🧾
+          </div>
+          <span class="action-label">बिल बनवा</span>
+        </a>
+
+        <a href="broadcast.html" class="action-btn">
+          <div class="action-icon" style="background:#dbeafe">
+            📢
+          </div>
+          <span class="action-label">Offer पाठवा</span>
+        </a>
+
+        <a href="catalog.html" class="action-btn">
+          <div class="action-icon" style="background:#ede9fe">
+            📸
+          </div>
+          <span class="action-label">Catalog</span>
+        </a>
+
+        <button class="action-btn"
+                onclick="showToast('Bot आत्ता Online आहे! ✅','success')">
+          <div class="action-icon" style="background:#fce7f3">
+            🤖
+          </div>
+          <span class="action-label">Bot Status</span>
+        </button>
+      </div>
+
+      <!-- Ready for Pickup Alert -->
+      <div class="section" id="ready-alert-section" style="display:none">
+        <div class="card" style="border-left:4px solid var(--green)">
+          <div class="flex-between">
+            <div>
+              <h3 style="color:var(--green)">🟢 Pickup Ready!</h3>
+              <p class="text-sm mt-4" id="ready-names">-</p>
+            </div>
+            <a href="orders.html" class="btn btn-success btn-sm">
+              पहा
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="section">
+        <div class="flex-between mb-8">
+          <p class="section-title" style="margin-bottom:0">
+            Recent ऑर्डर
+          </p>
+          <a href="orders.html"
+             class="text-pink text-xs text-bold">
+            सर्व पहा →
+          </a>
+        </div>
+        <div id="recent-orders">
+          <div class="card">
+            <div style="text-align:center;padding:20px;color:var(--gray-400)">
+              लोड होत आहे...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="goTo('dashboard.html')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" onclick="goTo('orders.html')">
+        <span class="nav-icon">📋</span>
+        <span>ऑर्डर</span>
+      </button>
+      <button class="nav-item"
+              onclick="goTo('new-order.html')"
+              style="color:var(--pink)">
+        <span class="nav-icon"
+              style="background:var(--pink);color:white;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;margin-top:-12px;box-shadow:0 4px 12px rgba(190,24,93,0.4)">
+          ✂️
+        </span>
+        <span>नवीन</span>
+      </button>
+      <button class="nav-item" onclick="goTo('bill.html')">
+        <span class="nav-icon">🧾</span>
+        <span>बिल</span>
+      </button>
+      <button class="nav-item" onclick="goTo('broadcast.html')">
+        <span class="nav-icon">📢</span>
+        <span>Offers</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="assets/db.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    // Set today's date
+    const today = new Date().toLocaleDateString('mr-IN', {
+      weekday: 'long', day: 'numeric',
+      month: 'long', year: 'numeric'
+    });
+    document.getElementById('today-date').textContent = 'आज: ' + today;
+
+    // Online status
+    function updateOnlineStatus() {
+      const dot  = document.getElementById('status-dot');
+      const text = document.getElementById('online-status-text');
+      if (navigator.onLine) {
+        dot.style.background  = '#4ade80';
+        text.textContent      = 'Online • Bot Active 🤖';
+      } else {
+        dot.style.background  = '#f97316';
+        text.textContent      = 'Offline • Changes saved locally';
+      }
+    }
+
+    window.addEventListener('online',  updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
+
+    // Load delivered count
+    async function loadDelivered() {
+      const orders    = await dbGetAll('orders');
+      const delivered = orders.filter(o => o.status === 'delivered');
+      setEl('stat-delivered', delivered.length);
+
+      // Ready alert
+      const ready = orders.filter(o => o.status === 'ready');
+      if (ready.length > 0) {
+        document.getElementById('ready-alert-section').style.display = 'block';
+        const names = ready.map(o => o.customerName).join(', ');
+        setEl('ready-names', names + ' — Pickup साठी ready!');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadDelivered();
+    });
+  </script>
+</body>
+</html>
