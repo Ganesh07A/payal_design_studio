@@ -2,7 +2,7 @@
   "name": "Payal Design Studio",
   "short_name": "Payal Studio",
   "description": "Payal Design Studio - Order Management",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fdf2f8",
   "theme_color": "#be185d",
